@@ -4,7 +4,7 @@ class Node:
         self.connectedTo = {}
 
     def addNeighbor(self,neighbor,weight=0):
-        self.connectedTo[neighbor] = weight
+        self.connectedTo[neighbor] = int(weight)
 
     def __str__(self):
         return str(self.name) + ' connectedTo: ' + str([node.name for node in self.connectedTo])
