@@ -1,4 +1,5 @@
 from node import Node
+from queue import Queue
 
 class Graph:
     def __init__(self):
@@ -16,9 +17,6 @@ class Graph:
             return self.nodeList[name]
         else:
             return None
-
-    # def __contains__(self,name):
-    #     return name in self.nodeList
 
     def addEdge(self,start,end,weight=0):
         if start not in self.nodeList:
@@ -47,8 +45,30 @@ class Graph:
                 if nextTown in currentTown.connectedTo:
                     distance = distance + currentTown.getWeight(nextTown)
                 else:
-                    print ("NO SUCH ROUTE")
+                    print ('NO SUCH ROUTE')
                     return
             else:
-                print ("NO SUCH ROUTE")
+                print ('NO SUCH ROUTE')
                 return
+
+    def possiblePathsMaximum(self, startNode, endNode, maxStops, startFlag):
+        if (maxStops >= 0 and startNode == endNode and startFlag):
+            return 1
+        if (maxStops <= 0) :
+            return 0
+        totalPaths = 0
+        for neighbor in startNode.getConnections():
+            startFlag = True
+            totalPaths = totalPaths + self.possiblePathsMaximum(neighbor, endNode, maxStops - 1, startFlag)
+        return totalPaths
+
+    def possiblePathsExact(self, startNode, endNode, maxStops, startFlag):
+        if (maxStops == 0 and startNode == endNode and startFlag):
+            return 1
+        if (maxStops <= 0) :
+            return 0
+        totalPaths = 0
+        for neighbor in startNode.getConnections():
+            startFlag = True
+            totalPaths = totalPaths + self.possiblePathsExact(neighbor, endNode, maxStops - 1, startFlag)
+        return totalPaths
