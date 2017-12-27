@@ -28,11 +28,17 @@ to B.
 10. The number of different routes from C to C with a distance of less than 30.
 
 Change the input data in the test.py file:
+
 towns = ['A', 'B', 'C', 'D', 'E']
+
 routes = ['AB5', 'BC4', 'CD8', 'DC8', 'DE6', 'AD5', 'CE2', 'EB3', 'AE7']
 
 Use the following functions of the Graph class to compute solutions:
+
 Graph.routeDistance(route)
+
 Graph.possibleRoutes(startTown, endTown, maxStops, comparison)
+
 Graph.shortestRoute(startTown, endTown)
+
 Graph.possibleRoutesDistance(startTown, endTown, distance, comparison)
