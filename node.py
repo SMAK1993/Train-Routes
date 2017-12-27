@@ -14,6 +14,3 @@ class Node:
 
     def getWeight(self,neighbor):
         return self.connectedTo[neighbor]
-
-    def __str__(self):
-        return str(self.name) + ' connected to: ' + str([node.name for node in self.connectedTo])

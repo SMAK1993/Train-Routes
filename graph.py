@@ -1,5 +1,5 @@
 from node import Node
-from queue import Queue
+import sys
 
 class Graph:
     def __init__(self):
@@ -51,24 +51,49 @@ class Graph:
                 print ('NO SUCH ROUTE')
                 return
 
-    def possiblePathsMaximum(self, startNode, endNode, maxStops, startFlag):
-        if (maxStops >= 0 and startNode == endNode and startFlag):
-            return 1
-        if (maxStops <= 0) :
-            return 0
-        totalPaths = 0
+    def possiblePathsMaximum(self, startNode, endNode, maxStops, startedTraversal = False, totalPaths = 0):
+        if (maxStops >= 0 and startNode == endNode and startedTraversal):
+            totalPaths = totalPaths + 1
+        if (maxStops < 0) :
+            return totalPaths
         for neighbor in startNode.getConnections():
-            startFlag = True
-            totalPaths = totalPaths + self.possiblePathsMaximum(neighbor, endNode, maxStops - 1, startFlag)
+            startedTraversal = True
+            totalPaths = totalPaths + self.possiblePathsMaximum(neighbor, endNode, maxStops - 1, startedTraversal)
         return totalPaths
 
-    def possiblePathsExact(self, startNode, endNode, maxStops, startFlag):
-        if (maxStops == 0 and startNode == endNode and startFlag):
-            return 1
-        if (maxStops <= 0) :
-            return 0
-        totalPaths = 0
+    def possiblePathsExact(self, startNode, endNode, maxStops, startedTraversal = False, totalPaths = 0):
+        if (maxStops == 0 and startNode == endNode and startedTraversal):
+            totalPaths = totalPaths + 1
+        if (maxStops < 0) :
+            return totalPaths
         for neighbor in startNode.getConnections():
-            startFlag = True
-            totalPaths = totalPaths + self.possiblePathsExact(neighbor, endNode, maxStops - 1, startFlag)
+            startedTraversal = True
+            totalPaths = totalPaths + self.possiblePathsExact(neighbor, endNode, maxStops - 1, startedTraversal)
         return totalPaths
+
+    def possiblePathsWeighted(self, startNode, endNode, maxWeight, currentWeight = 0, startedTraversal = False, totalPaths = 0):
+        if (currentWeight < maxWeight and startNode == endNode and startedTraversal):
+            totalPaths = totalPaths + 1
+        if (currentWeight >= maxWeight):
+            return totalPaths
+        for neighbor in startNode.getConnections():
+            startedTraversal = True
+            temp = self.possiblePathsWeighted(neighbor, endNode, maxWeight, currentWeight + startNode.connectedTo[neighbor], startedTraversal, totalPaths)
+            if temp:
+                totalPaths = temp
+        return totalPaths
+
+    def shortestPath(self, startNode, endNode, stops = 0, maxStops = 0, currentWeight = 0, startedTraversal = False, shortestPath = sys.maxsize):
+        if not startedTraversal:
+            maxStops = self.nodeCount
+        if (currentWeight <= shortestPath and startNode == endNode and startedTraversal):
+            shortestPath = currentWeight
+        if (currentWeight > shortestPath or stops >= maxStops):
+            return shortestPath
+        for neighbor in startNode.getConnections():
+            startedTraversal = True
+            stops = stops + 1
+            temp = self.shortestPath(neighbor, endNode, stops, maxStops, currentWeight + startNode.connectedTo[neighbor], startedTraversal, shortestPath)
+            if temp:
+                shortestPath = temp
+        return shortestPath
