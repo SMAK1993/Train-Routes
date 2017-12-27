@@ -12,7 +12,9 @@ For the test input, the towns are named using the first few letters of the alpha
 
 Graph: AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
 
-The solution to the following test can be obtained by running python test.py:
+**Assuming that either version of Python (2 or 3) are installed added to path to run solution.**
+
+The solution to the following test can be obtained by running **python test.py**:
 
 1. The distance of the route A-B-C.
 2. The distance of the route A-D.
