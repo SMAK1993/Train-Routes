@@ -12,7 +12,13 @@ For the test input, the towns are named using the first few letters of the alpha
 
 Graph: AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
 
-**Assuming that either version of Python (2 or 3) are installed added to path to run solution.**
+**Setup & Running Instructions**
+Assuming that either version of Python (2 or 3) are installed and added to path to run solution.
+
+1. Download or clone the repo.
+2. Open terminal on MacOS/Linux or powershell on Windows
+3. Change directory to Train-Routes
+4. Type **python test.py** and hit enter to run the solution
 
 The solution to the following test can be obtained by running **python test.py**:
 
