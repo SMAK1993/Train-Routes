@@ -31,16 +31,35 @@ def buildGraph(graph, nodes, edges):
 
 trainMap = Graph()
 buildGraph(trainMap, towns, routes)
+
+"""
+routeDistance(route) expects a route in the format Node1-Node2-...-NodeN
+"""
 trainMap.routeDistance('A-B-C')
 trainMap.routeDistance('A-D')
 trainMap.routeDistance('A-D-C')
 trainMap.routeDistance('A-E-B-C-D')
 trainMap.routeDistance('A-E-D')
 
+"""
+possibleRoutes(startTown, endTown, maxStops, use 1 of '<' or '<=' or '=')
+'<'  means stops LESS THAN maxStops
+'<=' means MAXIMUM number of stops is maxStops
+'<=' means number of stops is EXACTLY maxStops
+"""
 trainMap.possibleRoutes('C', 'C', 3, '<=')
 trainMap.possibleRoutes('A', 'C', 4, '=')
 
+"""
+shortestRoute(startTown, endTown) where startTown & endTown are already in graph
+"""
 trainMap.shortestRoute('A', 'C')
 trainMap.shortestRoute('B', 'B')
 
+"""
+possibleRoutesDistance(startTown, endTown, distance, use 1 of '<' or '<=' or '=')
+'<'  means distance LESS THAN distance
+'<=' means MAXIMUM number of distance is distance
+'<=' means number of distance is EXACTLY distance
+"""
 trainMap.possibleRoutesDistance('C', 'C', 30, '<')
