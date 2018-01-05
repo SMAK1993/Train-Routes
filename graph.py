@@ -1,271 +1,276 @@
-from node import Node
+"""
+Importing System Library & Custom Node class
+"""
 import sys
+from node import Node
 
 class Graph:
+    """
+    Custom Graph Class
+    """
     def __init__(self):
         """
         Constructor for Graph objects.
-        Create graph's dictionary of nodes and set number of nodes to 0
-        :attribute nodeList: dictionary of nodes in the graph
-        :attribute nodeCount: number of nodes in the graph
+        Create graph's dictionary of nodes and set number of nodes to 0\n
+        :attribute node_list: dictionary of nodes in the graph\n
+        :attribute node_count: number of nodes in the graph\n
         """
-        self.nodeList = {}
-        self.nodeCount = 0
+        self.node_list = {}
+        self.node_count = 0
 
-    def addNode(self,name):
+    def add_node(self, name):
         """
-        Create & add node to graph's nodeList dictionary increment nodeCount
-        :param name: name of node object being added to graph
+        Create & add node to graph's node_list dictionary increment node_count\n
+        :param name: name of node object being added to graph\n
         """
-        self.nodeCount = self.nodeCount + 1
-        newNode = Node(name)
-        self.nodeList[name] = newNode
-        return newNode
+        self.node_count = self.node_count + 1
+        new_node = Node(name)
+        self.node_list[name] = new_node
+        return new_node
 
-    def getNode(self,name):
+    def get_node(self, name):
         """
-        Return the node with :param name from graph's nodeList, else return None
-        :param name: name of node object to be returned
+        Return the node with :param name from graph's node_list, else return None\n
+        :param name: name of node object to be returned\n
         """
-        if name in self.nodeList:
-            return self.nodeList[name]
-        else:
-            return None
+        if name in self.node_list:
+            return self.node_list[name]
+        return None
 
-    def addEdge(self,start,end,weight=0):
+    def add_edge(self, start, end, weight=0):
         """
-        Add end node and weight start node's connectedTo dictionary
-        :param start: starting node object where the edge begins
-        :param end: ending node object where the edge ends
-        :param weight: optional weight of the edge (defaults to 0)
+        Add end node and weight start node's connected_to dictionary\n
+        :param start: starting node object where the edge begins\n
+        :param end: ending node object where the edge ends\n
+        :param weight: optional weight of the edge (defaults to 0)\n
         """
-        if start not in self.nodeList:
-            newNode = self.addNode(start)
-        if end not in self.nodeList:
-            newNode = self.addNode(end)
-        self.nodeList[start].addNeighbor(self.nodeList[end], weight)
+        if start not in self.node_list:
+            self.add_node(start)
+        if end not in self.node_list:
+            self.add_node(end)
+        self.node_list[start].add_neighbor(self.node_list[end], weight)
 
-    def routeDistance(self, route):
+    def route_distance(self, route):
         """
         Compute & print distance of :param route if it exists, else print
-        NO SUCH ROUTE
-        :param route: the route to traverse (FORMAT: Node1-Node2-...-NodeN)
+        NO SUCH ROUTE\n
+        :param route: the route to traverse (FORMAT: Node1-Node2-...-NodeN)\n
         """
         distance = 0
-        routeList = route.split('-')
-        for i in range(len(routeList)):
-            currentTown = self.getNode(routeList[i])
-            if currentTown:
-                if i+1 < len(routeList):
-                    nextTown = self.getNode(routeList[i+1])
+        route_list = route.split('-')
+        for i in range(len(route_list)):
+            current_town = self.get_node(route_list[i])
+            if current_town:
+                if i+1 < len(route_list):
+                    next_town = self.get_node(route_list[i+1])
                 else:
-                    print (distance)
+                    print(distance)
                     return
-                if nextTown in currentTown.connectedTo:
-                    distance = distance + currentTown.getWeight(nextTown)
+                if next_town in current_town.connected_to:
+                    distance = distance + current_town.get_weight(next_town)
                 else:
-                    print ('NO SUCH ROUTE')
+                    print('NO SUCH ROUTE')
                     return
             else:
-                print ('NO SUCH ROUTE')
+                print('NO SUCH ROUTE')
                 return
 
-    def possibleRoutes(self, startTown, endTown, maxStops, comparison):
+    def possible_routes(self, start_town, end_town, max_stops, comparison):
         """
-        Compute & print number of routes from startTown to endTown that meet the
-        comparison to maxStops.
-        Depending on comparison, a different helper function is called
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxStops: the number of stops to evaluate against
-        :param comparison: the comparison operator to use against maxStops
-        can be '=' for exact or '<=' for maximum or '<' for less than
+        Compute & print number of routes from start_town to end_town that meet the
+        comparison to max_stops.\n
+        Depending on comparison, a different helper function is called.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_stops: the number of stops to evaluate against\n
+        :param comparison: the comparison operator to use against max_stops
+        can be '=' for exact or '<=' for maximum or '<' for less than\n
         """
-        startNode = self.getNode(startTown)
-        endNode = self.getNode(endTown)
-        if (comparison == "="):
-            print (self.possiblePathsExact(startNode, endNode, maxStops))
-        elif (comparison == "<="):
-            print (self.possiblePathsMaximum(startNode, endNode, maxStops))
-        elif (comparison == "<"):
-            print (self.possiblePathsLessThan(startNode, endNode, maxStops))
+        start_node = self.get_node(start_town)
+        end_node = self.get_node(end_town)
+        if comparison == "=":
+            print(self.possible_paths_exact(start_node, end_node, max_stops))
+        elif comparison == "<=":
+            print(self.possible_paths_maximum(start_node, end_node, max_stops))
+        elif comparison == "<":
+            print(self.possible_paths_less_than(start_node, end_node, max_stops))
 
-    def possiblePathsLessThan(self, startNode, endNode, maxStops, startedTraversal = False, totalPaths = 0):
+    def possible_paths_less_than(self, start_node, end_node, max_stops, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown that have edges less than maxStops.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxStops: the number of stops to evaluate against
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with edges less than maxStops
+        start_town to end_town that have edges less than max_stops.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_stops: the number of stops to evaluate against\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with edges less than max_stops\n
         """
-        if (maxStops > 0 and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (maxStops <= 0) :
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            totalPaths = totalPaths + self.possiblePathsLessThan(neighbor, endNode, maxStops - 1, startedTraversal)
-        return totalPaths
+        if max_stops > 0 and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if max_stops <= 0:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            total_paths = total_paths + self.possible_paths_less_than(neighbor, end_node, max_stops - 1, started_traversal)
+        return total_paths
 
-    def possiblePathsMaximum(self, startNode, endNode, maxStops, startedTraversal = False, totalPaths = 0):
+    def possible_paths_maximum(self, start_node, end_node, max_stops, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown that have edges less than or equal to maxStops.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxStops: the number of stops to evaluate against
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with edges less than or equal to maxStops
+        start_town to end_town that have edges less than or equal to max_stops.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_stops: the number of stops to evaluate against\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with edges less than or equal to max_stops\n
         """
-        if (maxStops >= 0 and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (maxStops < 0) :
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            totalPaths = totalPaths + self.possiblePathsMaximum(neighbor, endNode, maxStops - 1, startedTraversal)
-        return totalPaths
+        if max_stops >= 0 and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if max_stops < 0:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            total_paths = total_paths + self.possible_paths_maximum(neighbor, end_node, max_stops - 1, started_traversal)
+        return total_paths
 
-    def possiblePathsExact(self, startNode, endNode, maxStops, startedTraversal = False, totalPaths = 0):
+    def possible_paths_exact(self, start_node, end_node, max_stops, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown have edges equal to maxStops.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxStops: the number of stops to evaluate against
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with edges equal to maxStops
+        start_town to end_town have edges equal to max_stops.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_stops: the number of stops to evaluate against\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with edges equal to max_stops\n
         """
-        if (maxStops == 0 and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (maxStops < 0) :
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            totalPaths = totalPaths + self.possiblePathsExact(neighbor, endNode, maxStops - 1, startedTraversal)
-        return totalPaths
+        if max_stops == 0 and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if max_stops < 0:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            total_paths = total_paths + self.possible_paths_exact(neighbor, end_node, max_stops - 1, started_traversal)
+        return total_paths
 
-    def possibleRoutesDistance(self, startTown, endTown, distance, comparison):
+    def possible_routes_distance(self, start_town, end_town, distance, comparison):
         """
-        Compute & print number of routes from startTown to endTown that meet the
-        comparison to distance.
-        Depending on comparison, a different helper function is called
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param distance: the weight to evaluate against
+        Compute & print number of routes from start_town to end_town that meet the
+        comparison to distance.\n
+        Depending on comparison, a different helper function is called.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param distance: the weight to evaluate against\n
         :param comparison: the comparison operator to use against distance
-        can be '=' for exact or '<=' for maximum or '<' for less than
+        can be '=' for exact or '<=' for maximum or '<' for less than\n
         """
-        startNode = self.getNode(startTown)
-        endNode = self.getNode(endTown)
-        if (comparison == "="):
-            print (self.possiblePathsWeightedExact(startNode, endNode, distance))
-        elif (comparison == "<="):
-            print (self.possiblePathsWeightedMaximum(startNode, endNode, distance))
-        elif (comparison == "<"):
-            print (self.possiblePathsWeightedLessThan(startNode, endNode, distance))
+        start_node = self.get_node(start_town)
+        end_node = self.get_node(end_town)
+        if comparison == "=":
+            print(self.possible_paths_weighted_exact(start_node, end_node, distance))
+        elif comparison == "<=":
+            print(self.possible_paths_weighted_maximum(start_node, end_node, distance))
+        elif comparison == "<":
+            print(self.possible_paths_weighted_lt(start_node, end_node, distance))
 
-    def possiblePathsWeightedLessThan(self, startNode, endNode, maxWeight, currentWeight = 0, startedTraversal = False, totalPaths = 0):
+    def possible_paths_weighted_lt(self, start_node, end_node, max_weight, current_weight=0, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown that have distance less than maxWeight.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxWeight: the weight to evaluate against
-        :param currentWeight: the currentWeight of the path so far
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with weight less than maxWeight
+        start_town to end_town that have distance less than max_weight.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_weight: the weight to evaluate against\n
+        :param current_weight: the current_weight of the path so far\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with weight less than max_weight\n
         """
-        if (currentWeight < maxWeight and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (currentWeight >= maxWeight):
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            temp = self.possiblePathsWeightedLessThan(neighbor, endNode, maxWeight, currentWeight + startNode.connectedTo[neighbor], startedTraversal, totalPaths)
+        if current_weight < max_weight and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if current_weight >= max_weight:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            temp = self.possible_paths_weighted_lt(neighbor, end_node, max_weight, current_weight + start_node.connected_to[neighbor], started_traversal, total_paths)
             if temp:
-                totalPaths = temp
-        return totalPaths
+                total_paths = temp
+        return total_paths
 
-    def possiblePathsWeightedMaximum(self, startNode, endNode, maxWeight, currentWeight = 0, startedTraversal = False, totalPaths = 0):
+    def possible_paths_weighted_maximum(self, start_node, end_node, max_weight, current_weight=0, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown that have distance less or equal to maxWeight.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxWeight: the weight to evaluate against
-        :param currentWeight: the currentWeight of the path so far
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with weight less or equal to maxWeight
+        start_town to end_town that have distance less or equal to max_weight.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_weight: the weight to evaluate against\n
+        :param current_weight: the current_weight of the path so far\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with weight less or equal to max_weight\n
         """
-        if (currentWeight < maxWeight and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (currentWeight >= maxWeight):
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            temp = self.possiblePathsWeightedMaximum(neighbor, endNode, maxWeight, currentWeight + startNode.connectedTo[neighbor], startedTraversal, totalPaths)
+        if current_weight < max_weight and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if current_weight >= max_weight:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            temp = self.possible_paths_weighted_maximum(neighbor, end_node, max_weight, current_weight + start_node.connected_to[neighbor], started_traversal, total_paths)
             if temp:
-                totalPaths = temp
-        return totalPaths
+                total_paths = temp
+        return total_paths
 
-    def possiblePathsWeightedExact(self, startNode, endNode, maxWeight, currentWeight = 0, startedTraversal = False, totalPaths = 0):
+    def possible_paths_weighted_exact(self, start_node, end_node, max_weight, current_weight=0, started_traversal=False, total_paths=0):
         """
         Recursively compute & return number of routes from
-        startTown to endTown that have distance equal to maxWeight.
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param maxWeight: the weight to evaluate against
-        :param currentWeight: the currentWeight of the path so far
-        :param startedTraversal: flag for dealing with same start and end
-        :param totalPaths: number of routes with weight equal to maxWeight
+        start_town to end_town that have distance equal to max_weight.\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param max_weight: the weight to evaluate against\n
+        :param current_weight: the current_weight of the path so far\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param total_paths: number of routes with weight equal to max_weight\n
         """
-        if (currentWeight < maxWeight and startNode == endNode and startedTraversal):
-            totalPaths = totalPaths + 1
-        if (currentWeight >= maxWeight):
-            return totalPaths
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
-            temp = self.possiblePathsWeightedExact(neighbor, endNode, maxWeight, currentWeight + startNode.connectedTo[neighbor], startedTraversal, totalPaths)
+        if current_weight < max_weight and start_node == end_node and started_traversal:
+            total_paths = total_paths + 1
+        if current_weight >= max_weight:
+            return total_paths
+        for neighbor in start_node.get_connections():
+            started_traversal = True
+            temp = self.possible_paths_weighted_exact(neighbor, end_node, max_weight, current_weight + start_node.connected_to[neighbor], started_traversal, total_paths)
             if temp:
-                totalPaths = temp
-        return totalPaths
+                total_paths = temp
+        return total_paths
 
-    def shortestRoute(self, startTown, endTown):
+    def shortest_route(self, start_town, end_town):
         """
-        Compute & print distance of shortest path from startTown to endTown
-        :param startTown: the starting node
-        :param endTown: the ending node
+        Compute & print distance of shortest path from start_town to end_town\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
         """
-        startNode = self.getNode(startTown)
-        endNode = self.getNode(endTown)
-        print (self.shortestPath(startNode, endNode))
+        start_node = self.get_node(start_town)
+        end_node = self.get_node(end_town)
+        print(self.shortest_path(start_node, end_node))
 
-    def shortestPath(self, startNode, endNode, stops = 0, maxStops = 0, currentWeight = 0, startedTraversal = False, shortestPath = sys.maxsize):
+    def shortest_path(self, start_node, end_node, stops=0, max_stops=0, current_weight=0, started_traversal=False, shortest_path=sys.maxsize):
         """
-        Recursively compute & return distance of shortest path
-        :param startTown: the starting node
-        :param endTown: the ending node
-        :param stops: number of stops so far in path
-        :param maxStops: the maximum number of stops in the graph
-        Initialized to the graphs nodeCount
-        :param currentWeight: the currentWeight of the path so far
-        :param startedTraversal: flag for dealing with same start and end
-        :param shortestPath: the distance of the shortest path
-        Initialized to the systems maximum value
+        Recursively compute & return distance of shortest path\n
+        :param start_town: the starting node\n
+        :param end_town: the ending node\n
+        :param stops: number of stops so far in path\n
+        :param max_stops: the maximum number of stops in the graph\n
+        Initialized to the graphs node_count\n
+        :param current_weight: the current_weight of the path so far\n
+        :param started_traversal: flag for dealing with same start and end\n
+        :param shortest_path: the distance of the shortest path
+        Initialized to the systems maximum value\n
         """
-        if not startedTraversal:
-            maxStops = self.nodeCount
-        if (currentWeight <= shortestPath and startNode == endNode and startedTraversal):
-            shortestPath = currentWeight
-        if (currentWeight > shortestPath or stops >= maxStops):
-            return shortestPath
-        for neighbor in startNode.getConnections():
-            startedTraversal = True
+        if not started_traversal:
+            max_stops = self.node_count
+        if current_weight <= shortest_path and start_node == end_node and started_traversal:
+            shortest_path = current_weight
+        if current_weight > shortest_path or stops >= max_stops:
+            return shortest_path
+        for neighbor in start_node.get_connections():
+            started_traversal = True
             stops = stops + 1
-            temp = self.shortestPath(neighbor, endNode, stops, maxStops, currentWeight + startNode.connectedTo[neighbor], startedTraversal, shortestPath)
+            temp = self.shortest_path(neighbor, end_node, stops, max_stops, current_weight + start_node.connected_to[neighbor], started_traversal, shortest_path)
             if temp:
-                shortestPath = temp
-        return shortestPath
+                shortest_path = temp
+        return shortest_path
