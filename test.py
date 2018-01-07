@@ -12,7 +12,10 @@ FORMAT: [Node1, Node2, ..., NodeN]
 TOWN_NODES = ['A', 'B', 'C', 'D', 'E']
 
 for key, value in enumerate(TOWN_NODES):
-    assert isinstance(value, str), "Town index {} with value {} must be of Type String".format(key,value)
+    assert isinstance(value, str), "Town index {} with value '{}' must be of Type String".format(key,value)
+    assert value[0].isupper(), "Town index {} with value '{}' must begin with uppercase letter".format(key,value)
+    number_of_uppercase = sum(1 for letter in value if letter.isupper())
+    assert number_of_uppercase == 1, "Town index {} with value '{}' must contain only 1 uppercase letter".format(key,value)
 
 """
 List of edges in the graph
