@@ -58,22 +58,22 @@ class Graph:
         """
         distance = 0
         route_list = route.split('-')
-        for i in range(len(route_list)):
-            current_town = self.get_node(route_list[i])
+        for key, value in enumerate(route_list):
+            current_town = self.get_node(value)
             if current_town:
-                if i+1 < len(route_list):
-                    next_town = self.get_node(route_list[i+1])
+                if key + 1 < len(route_list):
+                    next_town = self.get_node(route_list[key + 1])
                 else:
                     print(distance)
-                    return
+                    return distance
                 if next_town in current_town.connected_to:
                     distance = distance + current_town.get_weight(next_town)
                 else:
                     print('NO SUCH ROUTE')
-                    return
+                    return 0
             else:
                 print('NO SUCH ROUTE')
-                return
+                return 0
 
     def possible_routes(self, start_town, end_town, max_stops, comparison):
         """
@@ -89,11 +89,13 @@ class Graph:
         start_node = self.get_node(start_town)
         end_node = self.get_node(end_town)
         if comparison == "=":
-            print(self.possible_paths_exact(start_node, end_node, max_stops))
+            result = self.possible_paths_exact(start_node, end_node, max_stops)
         elif comparison == "<=":
-            print(self.possible_paths_maximum(start_node, end_node, max_stops))
+            result = self.possible_paths_maximum(start_node, end_node, max_stops)
         elif comparison == "<":
-            print(self.possible_paths_less_than(start_node, end_node, max_stops))
+            result = self.possible_paths_less_than(start_node, end_node, max_stops)
+        print(result)
+        return result
 
     def possible_paths_less_than(self, start_node, end_node, max_stops, started_traversal=False, total_paths=0):
         """
@@ -166,11 +168,13 @@ class Graph:
         start_node = self.get_node(start_town)
         end_node = self.get_node(end_town)
         if comparison == "=":
-            print(self.possible_paths_weighted_exact(start_node, end_node, distance))
+            result = self.possible_paths_weighted_exact(start_node, end_node, distance)
         elif comparison == "<=":
-            print(self.possible_paths_weighted_maximum(start_node, end_node, distance))
+            result = self.possible_paths_weighted_maximum(start_node, end_node, distance)
         elif comparison == "<":
-            print(self.possible_paths_weighted_lt(start_node, end_node, distance))
+            result = self.possible_paths_weighted_lt(start_node, end_node, distance)
+        print(result)
+        return result
 
     def possible_paths_weighted_lt(self, start_node, end_node, max_weight, current_weight=0, started_traversal=False, total_paths=0):
         """
@@ -205,7 +209,7 @@ class Graph:
         :param started_traversal: flag for dealing with same start and end\n
         :param total_paths: number of routes with weight less or equal to max_weight\n
         """
-        if current_weight < max_weight and start_node == end_node and started_traversal:
+        if current_weight <= max_weight and start_node == end_node and started_traversal:
             total_paths = total_paths + 1
         if current_weight >= max_weight:
             return total_paths
@@ -227,7 +231,7 @@ class Graph:
         :param started_traversal: flag for dealing with same start and end\n
         :param total_paths: number of routes with weight equal to max_weight\n
         """
-        if current_weight < max_weight and start_node == end_node and started_traversal:
+        if current_weight == max_weight and start_node == end_node and started_traversal:
             total_paths = total_paths + 1
         if current_weight >= max_weight:
             return total_paths
@@ -246,7 +250,9 @@ class Graph:
         """
         start_node = self.get_node(start_town)
         end_node = self.get_node(end_town)
-        print(self.shortest_path(start_node, end_node))
+        result = self.shortest_path(start_node, end_node)
+        print(result)
+        return result
 
     def shortest_path(self, start_node, end_node, stops=0, max_stops=0, current_weight=0, started_traversal=False, shortest_path=sys.maxsize):
         """

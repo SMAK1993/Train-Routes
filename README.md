@@ -18,7 +18,23 @@ Assuming that either version of Python (2 or 3) are installed and added to path 
 1. Download or clone the repo.
 2. Open terminal on MacOS/Linux or powershell on Windows
 3. Change directory to Train-Routes
-4. Type **python test.py** and hit enter to run the solution
+4. Type **python main.py** and hit enter to run the solution
+
+**Change the input data in the main.py file to the input of your choice:**
+
+TOWN_NODES = ['A', 'B', 'C', 'D', 'E']
+
+ROUTE_EDGES = ['AB5', 'BC4', 'CD8', 'DC8', 'DE6', 'AD5', 'CE2', 'EB3', 'AE7']
+
+**Use the following methods of the Graph class to compute solutions (Change parameters based on your test cases):**
+
+routeDistance(route)
+
+possibleRoutes(startTown, endTown, maxStops, comparison)
+
+shortestRoute(startTown, endTown)
+
+possibleRoutesDistance(startTown, endTown, distance, comparison)
 
 The solution to the following test can be obtained by running **python test.py**:
 
@@ -35,18 +51,21 @@ to C.
 to B.
 10. The number of different routes from C to C with a distance of less than 30.
 
-**Change the input data in the test.py file:**
+The following table represents the code coverage of **test.py**:
 
-towns = ['A', 'B', 'C', 'D', 'E']
-
-routes = ['AB5', 'BC4', 'CD8', 'DC8', 'DE6', 'AD5', 'CE2', 'EB3', 'AE7']
-
-**Use the following functions of the Graph class to compute solutions:**
-
-Graph.routeDistance(route)
-
-Graph.possibleRoutes(startTown, endTown, maxStops, comparison)
-
-Graph.shortestRoute(startTown, endTown)
-
-Graph.possibleRoutesDistance(startTown, endTown, distance, comparison)
+Name       Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------
+graph.py     139      2     78      9    95%   48, 50, 
+                                               47->48, 
+                                               49->50, 
+                                               61->exit, 
+                                               95->97, 
+                                               174->176, 
+                                               197->194, 
+                                               219->216, 
+                                               241->238, 
+                                               280->276
+node.py       10      0      0      0   100%
+test.py       38      0     10      0   100%
+------------------------------------------------------
+TOTAL        187      2     88      9    96%

@@ -50,11 +50,8 @@ build_graph(TRAIN_MAP, TOWN_NODES, ROUTE_EDGES)
 """
 route_distance(route) expects a route in the format Node1-Node2-...-NodeN
 """
-assert TRAIN_MAP.route_distance('A-B-C') == 9, "Route Distance 'A-B-C' must be 9"
-assert TRAIN_MAP.route_distance('A-D') == 5, "Route Distance 'A-D' must be 5"
-assert TRAIN_MAP.route_distance('A-D-C') == 13, "Route Distance 'A-D-C' must be 13"
-assert TRAIN_MAP.route_distance('A-E-B-C-D') == 22, "Route Distance 'A-E-B-C-D' must be 22"
-assert TRAIN_MAP.route_distance('A-E-D') == 0, "Route Distance 'A-E-D' must be 0"
+#Change parameters
+TRAIN_MAP.route_distance('A-B-C')
 
 """
 possible_routes(startTown, endTown, maxStops, use 1 of '<' or '<=' or '=')
@@ -62,14 +59,14 @@ possible_routes(startTown, endTown, maxStops, use 1 of '<' or '<=' or '=')
 '<=' means MAXIMUM number of stops is maxStops
 '<=' means number of stops is EXACTLY maxStops
 """
-assert TRAIN_MAP.possible_routes('C', 'C', 3, '<=') == 2, "Possible Paths for 'C' to 'C' must be 2"
-assert TRAIN_MAP.possible_routes('A', 'C', 4, '=') == 3, "Possible Paths for 'C' to 'C' must be 3"
+#Change parameters
+TRAIN_MAP.possible_routes('C', 'C', 3, '<=')
 
 """
 shortest_route(startTown, endTown) where startTown & endTown are already in graph
 """
-assert TRAIN_MAP.shortest_route('A', 'C') == 9, "Shortest Distance for 'A' to 'C' must be 9"
-assert TRAIN_MAP.shortest_route('B', 'B') == 9, "Shortest Distance for 'B' to 'B' must be 9"
+#Change parameters
+TRAIN_MAP.shortest_route('A', 'C')
 
 """
 possible_routes_distance(startTown, endTown, distance, use 1 of '<' or '<=' or '=')
@@ -77,10 +74,5 @@ possible_routes_distance(startTown, endTown, distance, use 1 of '<' or '<=' or '
 '<=' means MAXIMUM number of distance is distance
 '<=' means number of distance is EXACTLY distance
 """
-assert TRAIN_MAP.possible_routes_distance('C', 'C', 30, '<') == 7, "Possible Paths for 'C' to 'C' must be 7"
-
-print("\nCustom Tests to Increase Code Coverage")
-TRAIN_MAP.route_distance('F-G')
-TRAIN_MAP.possible_routes('A', 'C', 4, '<')
-TRAIN_MAP.possible_routes_distance('C', 'C', 30, '<=')
-TRAIN_MAP.possible_routes_distance('A', 'C', 9, '=')
+#Change parameters
+TRAIN_MAP.possible_routes_distance('C', 'C', 30, '<')
